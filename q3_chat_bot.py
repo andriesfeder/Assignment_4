@@ -58,7 +58,10 @@ def main():
             elif letter == '.' :
                 if eos.has_key(word1) :
                     #needs to be fixed
-                    eos[word1] = eos[word1] + (spare,)
+                    if spare in eos[word1] :
+                        continue
+                    else :
+                        eos[word1] = eos[word1] + (spare,)
                 else :
                     eos[word1] = (spare,);
             else :
@@ -80,28 +83,26 @@ def main():
                 word1 = letter + word1
         if dictionary.has_key(word1) :
             word2 = random.choice(dictionary[word1])
-            word2 = word2.capitalize()
             output = word2
+            output = output.capitalize()
         else :
             word2 = random.choice(dictionary.keys())
             output = word2
             output = output.capitalize()
         counter = 1
-        word1 = ''
+
         while counter < 20 :
-            if eos.has_key(word2):
-                if word1 in eos[word2] :
-                    break
-                else :
-                    word1 = word2
-                    word2 = random.choice(dictionary[word2])
-                    output = output + ' ' + word2
-                    counter = counter + 1
-            elif dictionary.has_key(word2):
+
+            if dictionary.has_key(word2):
                 word1 = word2
                 word2 = random.choice(dictionary[word2])
                 output = output + ' ' + word2
                 counter = counter + 1
+
+            if eos.has_key(word2):
+
+                if word1 in eos[word2] :
+                    break
             else :
                 break
         output = output + '.'

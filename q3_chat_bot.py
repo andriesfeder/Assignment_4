@@ -6,9 +6,12 @@ import random
 
 def main():
 
+    #two dictionaries declared, one for end of sentence, one for pair recording
     dictionary = {}
     eos = {}
 
+    #for loop to take pairs from each document given in the command line
+    #functions similarly to q2
     for word in sys.argv[1:]:
 
         word1 = ''
@@ -34,30 +37,33 @@ def main():
                     break
             else :
                 word1 = word1 + letter
-
+        #stores word pairs as key and values as tuples
         for letter in data:
-            #if letter is a space and length of word1 or word2 is 0, continues
-            #if letter is a space and length of word1 or word2 != 0, checks if
-            #dictionary has the word as a key. word = word1+'-'+word2
             if letter == ' ':
                 if len(word1) == 0:
                     continue
                 elif len(word2) == 0:
                     continue
                 if dictionary.has_key(word1) :
-                    #needs to be fixed
-                    dictionary[word1] = dictionary[word1] + (word2,)
-                    spare = word1
-                    word1 = word2
-                    word2 = ''
+                    if word2 in dictionary[word1]:
+                        spare = word1
+                        word1 = word2
+                        word2 = ''
+                        continue
+                    else:
+                        dictionary[word1] = dictionary[word1] + (word2,)
+                        spare = word1
+                        word1 = word2
+                        word2 = ''
                 else :
                     dictionary[word1] = (word2,);
                     spare = word1
                     word1 = word2
                     word2 = ''
+            #if '.', saves to eos dict with the second word of the pair
+            #as the key and first words in the tuple used for storage
             elif letter == '.' :
                 if eos.has_key(word1) :
-                    #needs to be fixed
                     if spare in eos[word1] :
                         continue
                     else :

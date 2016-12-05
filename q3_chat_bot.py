@@ -84,8 +84,28 @@ def main():
             output = word2
         else :
             word2 = random.choice(dictionary.keys())
-            word2 = word2.capitalize()
             output = word2
+            output = output.capitalize()
+        counter = 1
+        word1 = ''
+        while counter < 20 :
+            if eos.has_key(word2):
+                if word1 in eos[word2] :
+                    break
+                else :
+                    word1 = word2
+                    word2 = random.choice(dictionary[word2])
+                    output = output + ' ' + word2
+                    counter = counter + 1
+            elif dictionary.has_key(word2):
+                word1 = word2
+                word2 = random.choice(dictionary[word2])
+                output = output + ' ' + word2
+                counter = counter + 1
+            else :
+                break
+        output = output + '.'
+        print output
 
 if __name__ == '__main__':
     main()
